@@ -4,14 +4,27 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModelKt;
+import androidx.paging.Pager;
+import androidx.paging.PagingConfig;
+import androidx.paging.PagingLiveData;
 
 import kotlin.contracts.Returns;
+import kotlinx.coroutines.CoroutineScope;
 
 public class MainViewModel extends AndroidViewModel {
     int navigationOpSelected = R.id.gridViewOP;
 
     public MainViewModel(@NonNull Application application){
         super(application);
+        GalleryRepository galleryRepository = new GalleryRepository(application);
+        GalleryPagingSource galleryPagingSource = new GalleryPagingSource(galleryRepository);
+        Pager<Integer, ImageData> pager = new Pager(new PagingConfig(10), () -> galleryPagingSource);
+
+        CoroutineScope viewModelScope = ViewModelKt.getViewModelScope(this);
+        pageLv = PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager),viewModelScope);
+        //PAREIIII AQUIIIIIIIII
+        //PAREIIIII AQUIIIIII
     }
     public int getNavigationOpSelected(){
         return navigationOpSelected;
