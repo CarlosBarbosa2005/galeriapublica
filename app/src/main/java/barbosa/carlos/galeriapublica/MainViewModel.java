@@ -4,9 +4,11 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelKt;
 import androidx.paging.Pager;
 import androidx.paging.PagingConfig;
+import androidx.paging.PagingData;
 import androidx.paging.PagingLiveData;
 
 import kotlin.contracts.Returns;
@@ -14,6 +16,8 @@ import kotlinx.coroutines.CoroutineScope;
 
 public class MainViewModel extends AndroidViewModel {
     int navigationOpSelected = R.id.gridViewOP;
+
+    LiveData<PagingData<ImageData>> pageLv;
 
     public MainViewModel(@NonNull Application application){
         super(application);
@@ -23,8 +27,9 @@ public class MainViewModel extends AndroidViewModel {
 
         CoroutineScope viewModelScope = ViewModelKt.getViewModelScope(this);
         pageLv = PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager),viewModelScope);
-        //PAREIIII AQUIIIIIIIII
-        //PAREIIIII AQUIIIIII
+    }
+    public LiveData<PagingData<ImageData>> getPageLv(){
+        return pageLv;
     }
     public int getNavigationOpSelected(){
         return navigationOpSelected;
